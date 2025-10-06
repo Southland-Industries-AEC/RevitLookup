@@ -22,8 +22,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
 
-    - name: Setup .NET from global.json
+    - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
           dotnet-version: '9.0.x'
@@ -34,7 +37,7 @@ jobs:
         languages: csharp
 
     - name: Build
-      run: .\.nuke\build.ps1 Clean Compile
+      run: .\.nuke\build.ps1 Compile
       shell: pwsh
 
     - name: Perform CodeQL Analysis
