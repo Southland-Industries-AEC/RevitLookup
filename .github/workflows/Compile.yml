@@ -10,6 +10,11 @@ jobs:
   compile:
     name: Compile
     runs-on: windows-2022
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
