@@ -23,13 +23,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Setup .NET from global.json
+      uses: actions/setup-dotnet@v4
+      with:
+          global-json-file: ./global.json
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: csharp
 
-    - name: Auto build
-      uses: github/codeql-action/autobuild@v3
+    - name: Build
+      run: .\.nuke\build.ps1 Clean Compile
+      shell: pwsh
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
