@@ -21,10 +21,12 @@ using Microsoft.Extensions.Logging;
 using RevitLookup.Abstractions.Configuration;
 using RevitLookup.Abstractions.Services.Presentation;
 using RevitLookup.Abstractions.ViewModels.Decomposition;
+using RevitLookup.Core.Decomposition.Extensions;
 using RevitLookup.UI.Framework.Extensions;
 using RevitLookup.UI.Framework.Views.EditDialogs;
 using Wpf.Ui.Controls;
 using ContextMenu = System.Windows.Controls.ContextMenu;
+using ParameterExtensions = Nice3point.Revit.Extensions.ParameterExtensions;
 
 namespace RevitLookup.Core.Decomposition.Descriptors;
 
@@ -65,8 +67,8 @@ public sealed class ParameterDescriptor : Descriptor, IDescriptorResolver, IDesc
     {
         if (_parameter.StorageType == StorageType.Integer)
         {
-            manager.Register(nameof(Nice3point.Revit.Extensions.ParameterExtensions.AsBool), () => Variants.Value(_parameter.AsBool()));
-            manager.Register(nameof(Nice3point.Revit.Extensions.ParameterExtensions.AsColor), () => Variants.Value(_parameter.AsColor()));
+            manager.Register(nameof(ParameterExtensions.AsBool), () => Variants.Value(_parameter.AsBool()));
+            manager.Register(nameof(ParameterExtensions.AsColor), () => Variants.Value(_parameter.AsColor()));
         }
 
         if (_parameter.Element is not null && _parameter.Element.Document.IsFamilyDocument)
@@ -102,7 +104,7 @@ public sealed class ParameterDescriptor : Descriptor, IDescriptorResolver, IDesc
                 {
                     var parameterValue = dialog.Value; // Share between threads
 
-                    await RevitShell.AsyncEventHandler.RaiseAsync(_ => SetParameterValue(parameter, parameterValue));
+                    await EventHandlers.AsyncEventHandler.RaiseAsync(_ => SetParameterValue(parameter, parameterValue));
 
                     var decompositionViewModel = serviceProvider.GetRequiredService<IDecompositionSummaryViewModel>();
                     await decompositionViewModel.RefreshMembersAsync();

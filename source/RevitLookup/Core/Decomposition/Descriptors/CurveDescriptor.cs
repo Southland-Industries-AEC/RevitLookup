@@ -129,7 +129,7 @@ public sealed class CurveDescriptor : Descriptor, IDescriptorResolver, IContextM
             if (RevitContext.ActiveUiDocument is null) return;
             if (curve.Reference is null) return;
 
-            RevitShell.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences([curve.Reference]));
+            EventHandlers.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences([curve.Reference]));
         }
 
         void ShowCurve(Curve curve)
@@ -137,7 +137,7 @@ public sealed class CurveDescriptor : Descriptor, IDescriptorResolver, IContextM
             if (RevitContext.ActiveUiDocument is null) return;
             if (curve.Reference is null) return;
 
-            RevitShell.ActionEventHandler.Raise(application =>
+            EventHandlers.ActionEventHandler.Raise(application =>
             {
                 var uiDocument = application.ActiveUIDocument;
                 if (uiDocument is null) return;

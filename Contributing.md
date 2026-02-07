@@ -216,7 +216,7 @@ Descriptors are specialized classes that define how objects should be handled by
 To add a descriptor for a new class:
 
 1. Create a new descriptor class in the appropriate folder under `RevitLookup\Core\Decomposition\Descriptors`
-2. Register the descriptor in the descriptor map located at `RevitLookup\Core\Decomposition\DescriptorMap.cs`
+2. Register the descriptor in the descriptor map located at `RevitLookup\Core\Decomposition\DescriptorsMap.cs`
 
 ### IDescriptorResolver
 

@@ -54,7 +54,7 @@ public sealed class ThemeWatcherService(ISettingsService settingsService) : IThe
 
             if (!_isWatching)
             {
-                RevitShell.ActionEventHandler.Raise(application => application.ThemeChanged += OnRevitThemeChanged);
+                EventHandlers.ActionEventHandler.Raise(application => application.ThemeChanged += OnRevitThemeChanged);
                 _isWatching = true;
             }
         }
@@ -75,7 +75,7 @@ public sealed class ThemeWatcherService(ISettingsService settingsService) : IThe
 #if REVIT2024_OR_GREATER
         if (!_isWatching) return;
 
-        RevitShell.ActionEventHandler.Raise(application => application.ThemeChanged -= OnRevitThemeChanged);
+        EventHandlers.ActionEventHandler.Raise(application => application.ThemeChanged -= OnRevitThemeChanged);
         _isWatching = false;
 #endif
     }

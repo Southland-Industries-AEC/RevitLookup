@@ -312,7 +312,7 @@ namespace RevitLookup.Core.Visualization
         {
             _vertices = vertices;
 
-            RevitShell.ActionEventHandler.Raise(application =>
+            EventHandlers.ActionEventHandler.Raise(application =>
             {
                 if (application.ActiveUIDocument is null) return;
 
@@ -329,7 +329,7 @@ namespace RevitLookup.Core.Visualization
 
         public void Unregister()
         {
-            RevitShell.ActionEventHandler.Raise(application =>
+            EventHandlers.ActionEventHandler.Raise(application =>
             {
                 var directContextService = (MultiServerService) ExternalServiceRegistry.GetService(ExternalServices.BuiltInExternalServices.DirectContext3DService);
                 directContextService.RemoveServer(GetServerId());

@@ -12,7 +12,7 @@
 // THERE IS NO GUARANTEE THAT THE OPERATION OF THE PROGRAM WILL BE
 // UNINTERRUPTED OR ERROR FREE.
 
-namespace RevitLookup.Core;
+namespace RevitLookup.Core.Decomposition.Extensions;
 
 [PublicAPI]
 public static class ParameterExtensions

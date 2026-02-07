@@ -10,7 +10,6 @@ using RevitLookup.Abstractions.Services.Presentation;
 using RevitLookup.Abstractions.Services.Settings;
 using RevitLookup.Configuration;
 using RevitLookup.ServiceDefaults;
-using RevitLookup.Services;
 using RevitLookup.Services.Appearance;
 using RevitLookup.Services.Application;
 using RevitLookup.Services.Decomposition;
@@ -63,8 +62,8 @@ public static class Host
         builder.Services.AddScoped<IWindowIntercomService, WindowIntercomService>();
 
         //MVVM services
-        builder.Services.RegisterViews();
-        builder.Services.RegisterViewModels();
+        builder.Services.AddViews();
+        builder.Services.AddViewModels();
 
         //Application services
         builder.Services.AddSingleton<ISettingsService, SettingsService>();

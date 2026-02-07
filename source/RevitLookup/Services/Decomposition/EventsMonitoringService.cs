@@ -44,12 +44,12 @@ public sealed class EventsMonitoringService(ILogger<EventsMonitoringService> log
     public void RegisterEventInvocationCallback(Action<object, string> callback)
     {
         _callback = callback;
-        RevitShell.ActionEventHandler.Raise(Subscribe);
+        EventHandlers.ActionEventHandler.Raise(Subscribe);
     }
 
     public void Unregister()
     {
-        RevitShell.ActionEventHandler.Raise(Unsubscribe);
+        EventHandlers.ActionEventHandler.Raise(Unsubscribe);
     }
 
     private void Subscribe(UIApplication uiApplication)

@@ -78,7 +78,7 @@ public sealed class EdgeDescriptor : Descriptor, IDescriptorCollector, IContextM
             if (RevitContext.ActiveUiDocument is null) return;
             if (edge.Reference is null) return;
 
-            RevitShell.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences([edge.Reference]));
+            EventHandlers.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences([edge.Reference]));
         }
 
         void ShowEdge(Edge edge)
@@ -86,7 +86,7 @@ public sealed class EdgeDescriptor : Descriptor, IDescriptorCollector, IContextM
             if (RevitContext.ActiveUiDocument is null) return;
             if (edge.Reference is null) return;
 
-            RevitShell.ActionEventHandler.Raise(application =>
+            EventHandlers.ActionEventHandler.Raise(application =>
             {
                 var uiDocument = application.ActiveUIDocument;
                 if (uiDocument is null) return;

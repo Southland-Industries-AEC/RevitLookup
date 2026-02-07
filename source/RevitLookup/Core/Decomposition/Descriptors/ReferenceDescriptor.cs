@@ -57,7 +57,7 @@ public sealed class ReferenceDescriptor : Descriptor, IDescriptorResolver<Docume
         {
             if (RevitContext.ActiveUiDocument is null) return;
 
-            RevitShell.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences([reference]));
+            EventHandlers.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences([reference]));
         }
 #endif
     }

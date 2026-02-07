@@ -317,7 +317,7 @@ public class ElementDescriptor : Descriptor, IDescriptorResolver, IDescriptorExt
             if (RevitContext.ActiveUiDocument is null) return;
             if (!element.IsValidObject) return;
 
-            RevitShell.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetElementIds([element.Id]));
+            EventHandlers.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetElementIds([element.Id]));
         }
 
         void ShowFace(Element element)
@@ -325,7 +325,7 @@ public class ElementDescriptor : Descriptor, IDescriptorResolver, IDescriptorExt
             if (RevitContext.ActiveUiDocument is null) return;
             if (!element.IsValidObject) return;
 
-            RevitShell.ActionEventHandler.Raise(_ =>
+            EventHandlers.ActionEventHandler.Raise(_ =>
             {
                 RevitContext.ActiveUiDocument.ShowElements(element);
                 RevitContext.ActiveUiDocument.Selection.SetElementIds([element.Id]);
@@ -340,7 +340,7 @@ public class ElementDescriptor : Descriptor, IDescriptorResolver, IDescriptorExt
             var notificationService = serviceProvider.GetRequiredService<INotificationService>();
             try
             {
-                await RevitShell.AsyncEventHandler.RaiseAsync(_ =>
+                await EventHandlers.AsyncEventHandler.RaiseAsync(_ =>
                 {
                     using var transaction = new Transaction(element.Document);
                     transaction.Start($"Delete {element.Name}");

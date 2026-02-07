@@ -14,7 +14,7 @@
 
 using Color = System.Drawing.Color;
 
-namespace RevitLookup.Utils;
+namespace RevitLookup.Core.Decomposition.Extensions;
 
 /// <summary>
 ///     Helper class to easier work with color formats

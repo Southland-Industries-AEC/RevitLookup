@@ -4,11 +4,11 @@ using RevitLookup.UI.Framework;
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Controls;
 
-namespace RevitLookup.Services;
+namespace RevitLookup.Configuration;
 
-public static class ViewServices
+public static class ViewConfiguration
 {
-    public static void RegisterViews(this IServiceCollection services)
+    public static void AddViews(this IServiceCollection services)
     {
         services.Scan(selector => selector.FromAssemblyOf<App>()
             .AddClasses(filter => filter.AssignableTo<FluentWindow>()).AsSelf().WithScopedLifetime()

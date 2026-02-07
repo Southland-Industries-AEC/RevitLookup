@@ -18,7 +18,7 @@ using RevitLookup.Abstractions.ObservableModels.Decomposition;
 
 namespace RevitLookup.Core;
 
-public static partial class RevitShell
+public static class EventHandlers
 {
     public static ActionEventHandler ActionEventHandler
     {

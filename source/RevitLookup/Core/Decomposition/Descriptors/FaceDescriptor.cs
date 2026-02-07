@@ -78,7 +78,7 @@ public class FaceDescriptor : Descriptor, IDescriptorCollector, IContextMenuConn
             if (RevitContext.ActiveUiDocument is null) return;
             if (face.Reference is null) return;
 
-            RevitShell.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences([face.Reference]));
+            EventHandlers.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences([face.Reference]));
         }
 
         void ShowFace(Face face)
@@ -86,7 +86,7 @@ public class FaceDescriptor : Descriptor, IDescriptorCollector, IContextMenuConn
             if (RevitContext.ActiveUiDocument is null) return;
             if (face.Reference is null) return;
 
-            RevitShell.ActionEventHandler.Raise(application =>
+            EventHandlers.ActionEventHandler.Raise(application =>
             {
                 var uiDocument = application.ActiveUIDocument;
                 if (uiDocument is null) return;

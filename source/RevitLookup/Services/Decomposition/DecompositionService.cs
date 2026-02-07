@@ -20,7 +20,7 @@ public sealed class DecompositionService(ISettingsService settingsService) : IDe
     public async Task<ObservableDecomposedObject> DecomposeAsync(object? obj)
     {
         var options = CreateDecomposeMembersOptions();
-        return await RevitShell.AsyncObjectHandler.RaiseAsync(_ =>
+        return await EventHandlers.AsyncObjectHandler.RaiseAsync(_ =>
         {
             if (TryFindRevitContext(obj, out var context))
             {
@@ -34,7 +34,7 @@ public sealed class DecompositionService(ISettingsService settingsService) : IDe
 
     public async Task<List<ObservableDecomposedObject>> DecomposeAsync(IEnumerable objects)
     {
-        return await RevitShell.AsyncObjectsHandler.RaiseAsync(_ =>
+        return await EventHandlers.AsyncObjectsHandler.RaiseAsync(_ =>
         {
             var options = CreateDecomposeOptions();
             var capacity = objects is ICollection collection ? collection.Count : 4;
@@ -58,7 +58,7 @@ public sealed class DecompositionService(ISettingsService settingsService) : IDe
     public async Task<List<ObservableDecomposedMember>> DecomposeMembersAsync(ObservableDecomposedObject decomposedObject)
     {
         var options = CreateDecomposeMembersOptions();
-        return await RevitShell.AsyncMembersHandler.RaiseAsync(_ =>
+        return await EventHandlers.AsyncMembersHandler.RaiseAsync(_ =>
         {
             if (TryFindRevitContext(decomposedObject.RawValue, out var context))
             {

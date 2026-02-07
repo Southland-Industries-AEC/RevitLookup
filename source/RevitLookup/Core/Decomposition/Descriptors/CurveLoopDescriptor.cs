@@ -100,7 +100,7 @@ public sealed class CurveLoopDescriptor : Descriptor, IDescriptorResolver, ICont
 
             foreach (var curve in curveLoop)
             {
-                RevitShell.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences([curve.Reference]));
+                EventHandlers.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences([curve.Reference]));
             }
         }
 
@@ -109,7 +109,7 @@ public sealed class CurveLoopDescriptor : Descriptor, IDescriptorResolver, ICont
             if (RevitContext.ActiveUiDocument is null) return;
             if (curveLoop.Any(curve => curve.Reference is null)) return;
 
-            RevitShell.ActionEventHandler.Raise(application =>
+            EventHandlers.ActionEventHandler.Raise(application =>
             {
                 var uiDocument = application.ActiveUIDocument;
                 if (uiDocument is null) return;

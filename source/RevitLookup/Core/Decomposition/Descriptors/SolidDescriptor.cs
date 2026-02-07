@@ -91,7 +91,7 @@ public sealed class SolidDescriptor : Descriptor, IDescriptorExtension, IContext
 
                 if (references.Count == 0) return;
 
-                RevitShell.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences(references));
+                EventHandlers.ActionEventHandler.Raise(_ => RevitContext.ActiveUiDocument.Selection.SetReferences(references));
             }
             catch (Exception exception)
             {
@@ -116,7 +116,7 @@ public sealed class SolidDescriptor : Descriptor, IDescriptorExtension, IContext
 
                 if (references.Count == 0) return;
 
-                RevitShell.ActionEventHandler.Raise(application =>
+                EventHandlers.ActionEventHandler.Raise(application =>
                 {
                     var uiDocument = application.ActiveUIDocument;
                     if (uiDocument is null) return;

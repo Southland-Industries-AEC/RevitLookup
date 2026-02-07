@@ -29,7 +29,7 @@ public class Application : ExternalApplication
     public override void OnStartup()
     {
         Host.Start();
-        RevitShell.RegisterHandlers();
+        EventHandlers.RegisterHandlers();
 
         EnableThemes();
         EnableHardwareRendering();
@@ -60,7 +60,7 @@ public class Application : ExternalApplication
 
         //Revit overrides render mode during initialization
         //EventHandler is called after initialization
-        RevitShell.ActionEventHandler.Raise(_ => RenderOptions.ProcessRenderMode = RenderMode.Default);
+        EventHandlers.ActionEventHandler.Raise(_ => RenderOptions.ProcessRenderMode = RenderMode.Default);
     }
 
     public static void DisableHardwareRendering()
