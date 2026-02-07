@@ -10,13 +10,12 @@
     </PropertyGroup>
 
     <!-- Compability -->
-    <PropertyGroup>
-        <IsRepackable Condition="'$(RevitVersion)' &lt; '2027'">true</IsRepackable>
+    <PropertyGroup Condition="'$(RevitVersion)' &lt; '2027'">
+        <IsRepackable>true</IsRepackable>
         <RepackBinariesExcludes>LookupEngine*.dll</RepackBinariesExcludes>
     </PropertyGroup>
 
     <ItemGroup>
-        <!-- Revit Platform -->
         <PackageReference Include="Nice3point.Revit.Toolkit"/>
         <PackageReference Include="Nice3point.Revit.Extensions"/>
         <PackageReference Include="Nice3point.Revit.Api.RevitAPI"/>
@@ -25,27 +24,15 @@
         <PackageReference Include="Nice3point.Revit.Api.RevitAPIMacros"/>
         <PackageReference Include="Nice3point.Revit.Api.UIFramework"/>
         <PackageReference Include="Nice3point.Revit.Api.UIFrameworkServices"/>
-
-        <!-- MVVM -->
-        <PackageReference Include="CommunityToolkit.Mvvm"/>
-
-        <!-- Application Hosting -->
-        <PackageReference Include="Scrutor"/>
-        <PackageReference Include="Microsoft.Extensions.Http"/>
-
-        <!-- Logging -->
         <PackageReference Include="Serilog.Sinks.Debug"/>
         <PackageReference Include="Serilog.Sinks.Console"/>
         <PackageReference Include="Serilog.Sinks.Autodesk.Revit"/>
         <PackageReference Include="Serilog.Extensions.Hosting"/>
-
-        <!-- Data Utilities -->
+        <PackageReference Include="Scrutor"/>
         <PackageReference Include="Riok.Mapperly"/>
-
-        <!-- Build Automation -->
+        <PackageReference Include="CommunityToolkit.Mvvm"/>
+        <PackageReference Include="Microsoft.Extensions.Http"/>
         <PackageReference Include="ILRepack" PrivateAssets="all" IncludeAssets="build"/>
-
-        <!-- Development Tools -->
         <PackageReference Include="JetBrains.Annotations" PrivateAssets="all"/>
     </ItemGroup>
 
@@ -53,7 +40,7 @@
         <ProjectReference Include="..\LookupEngine\source\LookupEngine\LookupEngine.csproj"/>
         <ProjectReference Include="..\RevitLookup.Abstractions\RevitLookup.Abstractions.csproj"/>
         <ProjectReference Include="..\RevitLookup.Common\RevitLookup.Common.csproj"/>
-        <ProjectReference Include="..\RevitLookup.ServiceDefaults\RevitLookup.ServiceDefaults.csproj" />
+        <ProjectReference Include="..\RevitLookup.ServiceDefaults\RevitLookup.ServiceDefaults.csproj"/>
         <ProjectReference Include="..\RevitLookup.UI.Framework\RevitLookup.UI.Framework.csproj"/>
     </ItemGroup>
 
