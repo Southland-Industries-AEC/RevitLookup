@@ -40,7 +40,7 @@ public static class LoggerConfiguration
         return new Serilog.LoggerConfiguration()
             .ConfigureSinks()
             .ConfigureMinimumLevel(environment)
-            .ConfigureEnrichers(environment)
+            .ConfigureEnrichers()
             .CreateLogger();
     }
 
@@ -89,7 +89,7 @@ public static class LoggerConfiguration
             return loggerConfiguration;
         }
 
-        private Serilog.LoggerConfiguration ConfigureEnrichers(IHostEnvironment environment)
+        private Serilog.LoggerConfiguration ConfigureEnrichers()
         {
             return loggerConfiguration.Enrich.FromLogContext();
         }
