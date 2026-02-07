@@ -39,6 +39,9 @@ public sealed class EntityDescriptor(Entity entity) : Descriptor, IDescriptorRes
             var variants = Variants.Values<object>(fields.Count);
             foreach (var field in fields)
             {
+                //for double we always need UnitTypeId, so we can not see these fields when we use the overload with fieldName only
+                if (field.ValueType == typeof(double) || field.KeyType == typeof(double)) continue;
+
                 var method = entity.GetType().GetMethod(nameof(Entity.Get), [typeof(Field)])!;
                 var genericMethod = MakeGenericInvoker(field, method);
                 variants.Add(genericMethod.Invoke(entity, [field]), field.FieldName);
