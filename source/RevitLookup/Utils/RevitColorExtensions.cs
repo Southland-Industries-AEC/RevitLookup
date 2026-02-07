@@ -14,18 +14,22 @@
 
 using Color = System.Drawing.Color;
 
-namespace RevitLookup.Utils.Media;
+namespace RevitLookup.Utils;
 
 /// <summary>
 ///     Helper class to easier work with color formats
 /// </summary>
-public static class RevitColorFormatUtils
+[PublicAPI]
+public static class RevitColorExtensions
 {
-    /// <summary>
-    ///     Return a drawing color of a given <see cref="Autodesk.Revit.DB.Color"/>
-    /// </summary>
-    public static Color GetDrawingColor(this Autodesk.Revit.DB.Color color)
+    extension(Autodesk.Revit.DB.Color color)
     {
-        return Color.FromArgb(1, color.Red, color.Green, color.Blue);
+        /// <summary>
+        ///     Return a drawing color of a given <see cref="Autodesk.Revit.DB.Color"/>
+        /// </summary>
+        public Color GetDrawingColor()
+        {
+            return Color.FromArgb(1, color.Red, color.Green, color.Blue);
+        }
     }
 }

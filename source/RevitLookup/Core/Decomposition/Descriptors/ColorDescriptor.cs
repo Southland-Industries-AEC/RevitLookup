@@ -15,7 +15,7 @@
 using LookupEngine.Abstractions.Configuration;
 using LookupEngine.Abstractions.Decomposition;
 using RevitLookup.Common.Utils;
-using RevitLookup.Utils.Media;
+using RevitLookup.Utils;
 using Color = Autodesk.Revit.DB.Color;
 
 namespace RevitLookup.Core.Decomposition.Descriptors;

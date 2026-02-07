@@ -17,7 +17,6 @@ using RevitLookup.Abstractions.Models.Tools;
 using RevitLookup.Abstractions.Services.Decomposition;
 using RevitLookup.Abstractions.Services.Presentation;
 using RevitLookup.Abstractions.ViewModels.Tools;
-using RevitLookup.Core;
 using RevitLookup.Core.Units;
 
 namespace RevitLookup.ViewModels.Tools;
@@ -55,12 +54,12 @@ public sealed partial class UnitsViewModel(
             case BuiltInParameter parameter:
                 if (!ValidateContext()) return;
 
-                obj = RevitShell.GetBuiltinParameter(RevitContext.ActiveDocument!, parameter);
+                obj = parameter.ToParameter(RevitContext.ActiveDocument!);
                 break;
             case BuiltInCategory category:
                 if (!ValidateContext()) return;
 
-                obj = RevitShell.GetBuiltinCategory(RevitContext.ActiveDocument!, category);
+                obj = category.ToCategory(RevitContext.ActiveDocument!);
                 break;
             default:
                 obj = unitInfo.Value;

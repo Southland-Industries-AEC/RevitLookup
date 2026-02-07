@@ -1,12 +1,12 @@
 ﻿namespace RevitLookup.Core.Search;
 
-public static class ElementsFinder
+[PublicAPI]
+public static class ElementSearchExtensions
 {
     [Pure]
-    public static List<Element> SearchElements(string searchText)
+    public static List<Element> SearchElements(this Document document, string searchText)
     {
-        var activeDocument = RevitContext.ActiveDocument;
-        if (activeDocument is null) return [];
+        ArgumentNullException.ThrowIfNull(document);
 
         var rows = searchText.Split([Environment.NewLine], StringSplitOptions.RemoveEmptyEntries);
         var items = ParseRawRequest(rows);
@@ -17,27 +17,27 @@ public static class ElementsFinder
 #if REVIT2024_OR_GREATER
             if (long.TryParse(rawId, out var id))
             {
-                var element = activeDocument.GetElement(new ElementId(id));
+                var element = document.GetElement(new ElementId(id));
 #else
             if (int.TryParse(rawId, out var id))
             {
-                var element = activeDocument.GetElement(new ElementId(id));
+                var element = document.GetElement(new ElementId(id));
 #endif
                 if (element is not null) results.Add(element);
             }
             else if (rawId.Length == 45 && rawId.Count(c => c == '-') == 5)
             {
-                var element = activeDocument.GetElement(rawId);
+                var element = document.GetElement(rawId);
                 if (element is not null) results.Add(element);
             }
-            else if (rawId.Length == 22 && rawId.Count(c => c == ' ') == 0)
+            else if (rawId.Length == 22 && rawId.All(c => c != ' '))
             {
-                var elements = SearchByIfcGuid(rawId, activeDocument);
+                var elements = SearchByIfcGuid(document, rawId);
                 results.AddRange(elements);
             }
             else
             {
-                var elements = SearchByName(rawId, activeDocument);
+                var elements = SearchByName(document, rawId);
                 results.AddRange(elements);
             }
         }
@@ -66,7 +66,7 @@ public static class ElementsFinder
         return items;
     }
 
-    private static IEnumerable<Element> SearchByName(string rawId, Document document)
+    private static IEnumerable<Element> SearchByName(Document document, string rawId)
     {
         var elementTypes = document.GetElements().WhereElementIsElementType();
         var elementInstances = document.GetElements().WhereElementIsNotElementType();
@@ -75,7 +75,7 @@ public static class ElementsFinder
             .Where(element => element.Name.Contains(rawId, StringComparison.OrdinalIgnoreCase));
     }
 
-    private static IList<Element> SearchByIfcGuid(string rawId, Document document)
+    private static IList<Element> SearchByIfcGuid(Document document, string rawId)
     {
         var guidProvider = new ParameterValueProvider(new ElementId(BuiltInParameter.IFC_GUID));
         var typeGuidProvider = new ParameterValueProvider(new ElementId(BuiltInParameter.IFC_TYPE_GUID));

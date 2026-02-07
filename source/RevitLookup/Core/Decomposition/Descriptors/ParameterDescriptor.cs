@@ -13,7 +13,6 @@
 // UNINTERRUPTED OR ERROR FREE.
 
 using System.Reflection;
-using System.Windows.Controls;
 using System.Windows.Input;
 using LookupEngine.Abstractions.Configuration;
 using LookupEngine.Abstractions.Decomposition;
@@ -25,6 +24,7 @@ using RevitLookup.Abstractions.ViewModels.Decomposition;
 using RevitLookup.UI.Framework.Extensions;
 using RevitLookup.UI.Framework.Views.EditDialogs;
 using Wpf.Ui.Controls;
+using ContextMenu = System.Windows.Controls.ContextMenu;
 
 namespace RevitLookup.Core.Decomposition.Descriptors;
 
@@ -65,8 +65,8 @@ public sealed class ParameterDescriptor : Descriptor, IDescriptorResolver, IDesc
     {
         if (_parameter.StorageType == StorageType.Integer)
         {
-            manager.Register(nameof(ParameterExtensions.AsBool), () => Variants.Value(_parameter.AsBool()));
-            manager.Register(nameof(ParameterExtensions.AsColor), () => Variants.Value(_parameter.AsColor()));
+            manager.Register(nameof(Nice3point.Revit.Extensions.ParameterExtensions.AsBool), () => Variants.Value(_parameter.AsBool()));
+            manager.Register(nameof(Nice3point.Revit.Extensions.ParameterExtensions.AsColor), () => Variants.Value(_parameter.AsColor()));
         }
 
         if (_parameter.Element is not null && _parameter.Element.Document.IsFamilyDocument)
@@ -97,11 +97,12 @@ public sealed class ParameterDescriptor : Descriptor, IDescriptorResolver, IDesc
             try
             {
                 var dialog = serviceProvider.GetRequiredService<EditValueDialog>();
-                var result = await dialog.ShowAsync(parameter.Definition.Name, RevitShell.GetParameterValue(parameter), "Update the parameter");
+                var result = await dialog.ShowAsync(parameter.Definition.Name, parameter.GetStringValue(), "Update the parameter");
                 if (result == ContentDialogResult.Primary)
                 {
                     var parameterValue = dialog.Value; // Share between threads
-                    await RevitShell.AsyncEventHandler.RaiseAsync(_ => RevitShell.UpdateParameterValue(parameter, parameterValue));
+
+                    await RevitShell.AsyncEventHandler.RaiseAsync(_ => SetParameterValue(parameter, parameterValue));
 
                     var decompositionViewModel = serviceProvider.GetRequiredService<IDecompositionSummaryViewModel>();
                     await decompositionViewModel.RefreshMembersAsync();
@@ -116,5 +117,19 @@ public sealed class ParameterDescriptor : Descriptor, IDescriptorResolver, IDesc
                 notificationService.ShowError("Updating parameter value error", exception);
             }
         }
+    }
+
+    private static void SetParameterValue(Parameter parameter, string parameterValue)
+    {
+        using var transaction = new Transaction(parameter.Element.Document);
+        transaction.Start("Set parameter value");
+
+        var result = parameter.TrySetStringValue(parameterValue);
+        if (!result)
+        {
+            throw new ArgumentException("Invalid parameter value");
+        }
+
+        transaction.Commit();
     }
 }
