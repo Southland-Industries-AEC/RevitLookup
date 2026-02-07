@@ -45,7 +45,8 @@ public sealed class CompileProjectModule(IOptions<BuildOptions> buildOptions) : 
             Configuration = configuration,
             Properties = new List<KeyValue>
             {
-                ("Version", version)
+                ("Version", version),
+                ("HostEnvironment", "Production")
             }
         }, cancellationToken: cancellationToken);
     }
