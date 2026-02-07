@@ -15,17 +15,27 @@ public sealed partial class SearchElementsViewModel(
 
     public async Task<bool> SearchElementsAsync()
     {
+        if (!ValidateContext()) return false;
+
         var result = SearchText != string.Empty;
-        if (result)
-        {
-            var elements = ElementsFinder.SearchElements(SearchText);
-            await decompositionService.VisualizeDecompositionAsync(elements);
-        }
-        else
+        if (!result) return false;
+
+        var elements = RevitContext.ActiveDocument!.SearchElements(SearchText);
+        if (elements.Count == 0)
         {
             notificationService.ShowWarning("Search elements", "There are no elements found for your request");
+            return false;
         }
 
-        return result;
+        await decompositionService.VisualizeDecompositionAsync(elements);
+        return true;
+    }
+
+    private bool ValidateContext()
+    {
+        if (RevitContext.ActiveUiDocument is not null) return true;
+
+        notificationService.ShowWarning("Invalid context", "There are no open documents");
+        return false;
     }
 }
