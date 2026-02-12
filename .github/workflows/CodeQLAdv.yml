@@ -2,50 +2,48 @@ name: CodeQL Advanced
 
 on:
   push:
-    branches: [dev]
+    branches: [ "dev" ]
   pull_request:
-    branches: [dev]
-  workflow_dispatch: # allows manual run from Actions tab
+    branches: [ "dev" ]
+  workflow_dispatch:
   schedule:
-    - cron: '26 5 * * 1'
+    - cron: "26 5 * * 1"
 
 jobs:
   analyze:
-    name: Analyze csharp
+    name: Analyze (C#)
     runs-on: windows-latest
+
     permissions:
-      security-events: write
-      packages: read
       actions: read
       contents: read
+      security-events: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0
+          submodules: recursive
 
       - name: Setup .NET (from global.json)
         uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
 
-      - name: Print .NET info
+      - name: Show .NET info
         shell: pwsh
         run: |
-          dotnet --version
           dotnet --info
-          dotnet --list-sdks
+          dotnet --version
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: csharp
 
-      - name: Build
-        run: .\.nuke\build.ps1 Compile
-        shell: pwsh
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
